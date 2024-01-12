@@ -1,0 +1,54 @@
+public class MainActivity extends AppCompatActivity {  
+  
+    MediaPlayer media;  
+  
+    int starttime = 0;  
+    int frwdrate = 5000;  
+    int bkwdrate = 5000;  
+  
+    public void play(View view) throws IOException {  
+        Toast.makeText(MainActivity.this,"Media has started playing",Toast.LENGTH_SHORT).show();  
+        media.start();  
+    }  
+  
+    public void pause(View view){  
+        Toast.makeText(MainActivity.this, "Paused", Toast.LENGTH_SHORT).show();  
+        media.stop();  
+        media = MediaPlayer.create(this, R.raw.song);  
+    }  
+    public void forward(View view){  
+        int dur = media.getDuration();  
+        int curr = media.getCurrentPosition();  
+  
+        if(curr+frwdrate <= dur)  
+            media.seekTo(curr + frwdrate);  
+        else            
+	        Toast.makeText(MainActivity.this, "Almost done", 
+	        Toast.LENGTH_SHORT).show();  
+    }  
+  
+    public void backward(View view){  
+        int curr = media.getCurrentPosition();  
+        if (curr-bkwdrate >= 0)  
+            media.seekTo(curr-bkwdrate);  
+  
+        else            
+        Toast.makeText(MainActivity.this, "You are at the start !", 
+        Toast.LENGTH_SHORT).show();  
+    }  
+  
+    public void restart(View view) throws IOException {  
+        if(media.isPlaying()){  
+            media.stop();  
+            media = MediaPlayer.create(this, R.raw.song);  
+        }  
+        media.seekTo(starttime);  
+        media.start();  
+    }  
+    @Override  
+    protected void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.activity_main);  
+        media = MediaPlayer.create(this, R.raw.song);  
+    }  
+}
